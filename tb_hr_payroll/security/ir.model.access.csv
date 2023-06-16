@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+tb_hr_payroll.access_insured_type,access_insured_type,tb_hr_payroll.model_insured_type,base.group_user,1,1,1,1

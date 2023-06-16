@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record  id="view_insured_type_form" model="ir.ui.view">
+            <field name="name">insured.type.form</field>
+            <field name="model">insured.type</field>
+            <field name="arch" type="xml">
+                <form string="Insured Type">
+                <header>
+                    <button name="request_approve" string="Approve" type="object" class="oe_highlight" attrs="{'invisible': [('state','!=','draft')]}"/>
+                    <button name="request_approve" string="Reject" type="object" class="oe_highlight" attrs="{'invisible': [('state','!=','done')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                </header>
+                    <sheet>
+                        <group col="2">
+                            <group>
+                                <field name="code"/>
+                                <field name="pension_insured"/>
+                                <field name="allowance_insured"/>
+                                <field name="health_insured"/>
+                                <field name="unemployment_insured"/>
+                                <field name="work_injury_insured"/>
+                                <field name="social_security_contributions_percent_insured"/>
+                           </group>
+                           <group>
+                                <field name="name"/>
+                                <field name="pension_ao"/>
+                                <field name="allowance_ao"/>
+                                <field name="health_ao"/>
+                                <field name="unemployment_ao"/>
+                                <field name="work_injury_insured_ao"/>
+                                <field name="social_security_contributions_percent_ao"/>
+                           </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record  id="view_insured_type_tree" model="ir.ui.view">
+            <field name="name">insured.type.tree</field>
+            <field name="model">insured.type</field>
+            <field name="arch" type="xml">
+                <tree string="Insured Type">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="pension_insured"/>
+                    <field name="pension_ao"/>
+                    <field name="allowance_insured"/>
+                    <field name="allowance_ao"/>
+                    <field name="health_insured"/>
+                    <field name="health_ao"/>
+                    <field name="unemployment_insured"/>
+                    <field name="unemployment_ao"/>
+                    <field name="work_injury_insured"/>
+                    <field name="work_injury_insured_ao"/>
+                    <field name="social_security_contributions_percent_insured"/>
+                    <field name="social_security_contributions_percent_ao"/>
+                </tree>
+            </field>
+        </record>
+        <record id="open_insured_type_action" model="ir.actions.act_window">
+            <field name="name">Insured type</field>
+            <field name="res_model">insured.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem action="open_insured_type_action" sequence="5" id="menu_insured_type_root" parent="hr_payroll.menu_hr_salary_configuration"/>
+    </data>
+</odoo>
