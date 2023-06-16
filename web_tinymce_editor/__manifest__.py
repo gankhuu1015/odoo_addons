@@ -20,7 +20,6 @@
             'web_tinymce_editor/static/src/js/wysiwyg.js',
         ],
     },
-    'images': ['static/description/tavanbogd.png'],
     'installable': True,
     'auto_install': False,
     'license': 'LGPL-3',
