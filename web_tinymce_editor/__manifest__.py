@@ -20,6 +20,7 @@
             'web_tinymce_editor/static/src/js/wysiwyg.js',
         ],
     },
+    'images': ['static/description/windows_main_screenshot.png'],
     'installable': True,
     'auto_install': False,
     'license': 'LGPL-3',
