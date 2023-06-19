@@ -47,7 +47,6 @@ export class TinyInit extends HtmlField {
     if (this.props.readonly || !this.isRendered) {
       return super.commitChanges();
     }
-
     const $editable = this.wysiwyg.getEditable();
     await this.wysiwyg.cleanForSave();
     await this.wysiwyg.saveModifiedImages(this.$content);
@@ -58,6 +57,7 @@ export class TinyInit extends HtmlField {
     var myContent = tinymce.activeEditor.getContent();
     this.wysiwyg.$editable.html($(myContent).html());
     $editorEnable.addClass("editor_enable");
+    await super.commitChanges();
   }
 
   async startWysiwyg(...args) {
