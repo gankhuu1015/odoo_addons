@@ -45,18 +45,21 @@ export class TinyInit extends HtmlField {
 
   async commitChanges() {
     if (this.props.readonly || !this.isRendered) {
-      return super.commitChanges();
+      return await super.commitChanges();
     }
     const $editable = this.wysiwyg.getEditable();
+
     await this.wysiwyg.cleanForSave();
     await this.wysiwyg.saveModifiedImages(this.$content);
-    await super.commitChanges();
+
     const $editorEnable = $editable.closest(".editor_enable");
     $editorEnable.removeClass("editor_enable");
     this.wysiwyg.odooEditor.observerUnactive("toInline");
+
     var myContent = tinymce.activeEditor.getContent();
-    this.wysiwyg.$editable.html($(myContent).html());
+    this.wysiwyg.$editable.html(myContent);
     $editorEnable.addClass("editor_enable");
+
     await super.commitChanges();
   }
 
@@ -65,17 +68,11 @@ export class TinyInit extends HtmlField {
     setTimeout(async () => {
       tinymce.remove;
       tinymce.init({
-        selector: ".tiny_test_init",
+        selector: ".o_field_tiny_init",
         plugins:
-          "anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss",
+          "anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount",
         toolbar:
-          "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
-        tinycomments_mode: "embedded",
-        tinycomments_author: "Author name",
-        mergetags_list: [
-          { value: "First.Name", title: "First Name" },
-          { value: "Email", title: "Email" },
-        ],
+          "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat",
       });
     }, 1000);
     await this._resetIframe();
