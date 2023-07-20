@@ -55,9 +55,9 @@ export class TinyInit extends HtmlField {
     const $editorEnable = $editable.closest(".editor_enable");
     $editorEnable.removeClass("editor_enable");
     this.wysiwyg.odooEditor.observerUnactive("toInline");
-
     var myContent = tinymce.activeEditor.getContent();
-    this.wysiwyg.$editable.html(myContent);
+    var html_value = myContent.replace('class="oe-collaboration-selections-container"',"");
+    this.wysiwyg.$editable.html(html_value);
     $editorEnable.addClass("editor_enable");
 
     await super.commitChanges();
