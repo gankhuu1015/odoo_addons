@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<templates>
-  <t t-name="text_tiny" owl="1">
-     <textarea type="text" class='test-tiny-editor'/>
-  </t>
-
-</templates>
