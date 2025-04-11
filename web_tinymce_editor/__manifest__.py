@@ -14,8 +14,11 @@
     'price': 20.00,
     'currency': 'USD',
     "application": True,
-    'depends': ['base', 'base_setup', 'web', 'bus', 'web_editor'],
-    'data': [],
+    'depends': ['base', 'base_setup', 'web', 'web_editor'],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/example_views.xml'
+        ],
     'assets': {
         'web.assets_backend': [
             'web_tinymce_editor/static/src/js/web_tinymce.js',

@@ -4,7 +4,7 @@ import { HtmlField } from "@web_editor/js/backend/html_field";
 import { registry } from "@web/core/registry";
 import { _lt } from "@web/core/l10n/translation";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
-const { onWillStart, useEffect, useSubEnv } = owl;
+const { onMounted, useSubEnv } = owl;
 import { useService } from "@web/core/utils/hooks";
 import { getWysiwygClass } from "web_editor.loader";
 import { loadBundle } from "@web/core/assets";
@@ -16,51 +16,100 @@ export class TinyInit extends HtmlField {
       onWysiwygReset: this._resetIframe.bind(this),
     });
 
-    // Initialize Odoo services like action, rpc, and dialog
     this.action = useService("action");
     this.rpc = useService("rpc");
     this.dialog = useService("dialog");
+    this.orm = useService("orm");
+
+    this.originalContent = this.props.value || "";
+    onMounted(() => this.initializeTinyMCE());
+    this._patchFormButtons();
 
   }
+  _patchFormButtons() {
+    setTimeout(() => {
 
-  // Getter for WYSIWYG options, overriding some default options
+        const previouBtn = document.querySelector(".o_pager_previous");
+        const nexBtn = document.querySelector(".o_pager_next");
+        const modelName = this.props.record.resModel;
+        const fieldName = this.props.fieldName;
+        const resIds = this.props.record.resIds;
+        
+        const loadAndUpdate = async (targetId) => {
+            const [result] = await this.orm.read(modelName, [targetId], [fieldName]);
+            if (result) {
+                tinymce.activeEditor.setContent(result[fieldName]);
+                this.originalContent = result[fieldName]
+            }
+        };
+        
+        if (previouBtn) {
+            previouBtn.addEventListener("click", async () => {
+                const resId = this.props.record.resId;
+                const currentIndex = resIds.indexOf(resId);
+                const prevId = currentIndex === 0 ? resIds[resIds.length - 1] : resIds[currentIndex - 1];
+                loadAndUpdate(prevId);
+            });
+        }
+
+        if (nexBtn) {
+            nexBtn.addEventListener("click", async () => {
+                const resId = this.props.record.resId;
+                const currentIndex = resIds.indexOf(resId);
+                const nextId = currentIndex === resIds.length - 1 ? resIds[0] : resIds[currentIndex + 1];
+                loadAndUpdate(nextId);
+            });
+        }
+
+        const saveBtn = document.querySelector(".o_form_button_save");
+        const cancelBtn = document.querySelector(".o_form_button_cancel");
+        if (saveBtn) {
+            saveBtn.addEventListener("click", () => {
+                this.commitChanges();
+            });
+        }
+        if (cancelBtn) {
+            cancelBtn.addEventListener("click", () => {
+                if (typeof tinymce !== 'undefined' && tinymce.activeEditor) {
+                    tinymce.activeEditor.setContent(this.originalContent);
+                }
+            });
+        }
+        }, 400);
+    }
+
   get wysiwygOptions() {
     return {
       ...super.wysiwygOptions,
       onIframeUpdated: () => this.onIframeUpdated(),
-      resizable: false, // Disable resizing of the editor
-      defaultDataForLinkTools: { isNewWindow: true }, // Default for links opening in a new window
+      resizable: false,
+      defaultDataForLinkTools: { isNewWindow: true },
       onWysiwygBlur: () => {
         this.commitChanges();
         this.wysiwyg.odooEditor.toolbarHide();
     },
-      ...this.props.wysiwygOptions, // Allow custom WYSIWYG options passed from props
+      ...this.props.wysiwygOptions,
     };
   }
 
   async commitChanges() {
-    if (this.props.readonly || !this.isRendered) {
-      return await super.commitChanges();
-    }
-
-    // Get the editable content from the TinyMCE editor
     const $editable = this.wysiwyg.getEditable();
+
     await this.wysiwyg.cleanForSave();
     await this.wysiwyg.saveModifiedImages(this.$content);
 
-    // Disable editor temporarily during save
     const $editorEnable = $editable.closest(".editor_enable");
     $editorEnable.removeClass("editor_enable"); 
-    const fieldName = this.props.inlineField;
     this.wysiwyg.odooEditor.observerUnactive("toInline");
     var myContent = tinymce.activeEditor.getContent();
     this.wysiwyg.$editable.html(myContent);
+    this.originalContent = myContent
     $editorEnable.addClass("editor_enable");
     await super.commitChanges();
   }
 
 
-  _onContentChanged() {
+    _onContentChanged() {
       const content = tinymce.activeEditor.getContent();
       this._lastClickInIframe = true;
       const fieldName = this.props.fieldName;
@@ -69,33 +118,39 @@ export class TinyInit extends HtmlField {
       });
     }
 
-      async startWysiwyg(...args) {
-            await super.startWysiwyg(...args);
-            await loadBundle({
-              jsLibs: [
-                  '/aspl_web_tinymce_editor/static/lib/tinymce/tinymce.min.js'
-              ],
-          });
-          if (typeof tinymce !== 'undefined') {
-              setTimeout(async () => {
-                tinymce.remove;
+    async initializeTinyMCE() {
+        await loadBundle({
+            jsLibs: [
+                '/aspl_web_tinymce_editor/static/lib/tinymce/tinymce.min.js'
+            ],
+        });
+
+        if (typeof tinymce !== 'undefined') {
                 tinymce.init({
-                  selector: ".o_field_tiny_init",
-                  height: 300,
-                  plugins:
+                    selector: ".o_field_tiny_init",
+                    height: 300,
+                    plugins:
                     "anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount", // TinyMCE plugins
-                  toolbar:
+                    toolbar:
                     "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat", 
                     setup: (editor) => {
-                      editor.on('change', () => {
-                          this._onContentChanged();
-                      });
-                  }
-                  });
-              }, 5);
-            }
-            await this._resetIframe();
-      }
+                        editor.on('change', () => {
+                            this._onContentChanged();
+                        });
+                        editor.on('init', () => {
+                        if (this.props.value) {
+                            editor.setContent(this.props.value);
+                        }
+                    });
+                    }
+                });
+        }
+    }
+
+    async startWysiwyg(...args) {
+        await super.startWysiwyg(...args);
+        await this._resetIframe();
+    }
 
   // Reset the TinyMCE iframe state, removing unnecessary UI elements
   async _resetIframe() {

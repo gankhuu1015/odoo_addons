@@ -8,7 +8,6 @@ odoo.define("aspl_web_tinymce_editor.wysiwyg", function (require) {
          */
         init: function(parent, options) {
             this._super.apply(this, arguments);
-            // Ensure default options are set
             this.options = options || {};
             this.options.sanitize_tags = this.options.sanitize_tags || true;
         },
