@@ -11,7 +11,7 @@
     'description': """Provides a widget for editing HTML fields using TinyMCE.""",
     'author': 'Gankhuu',
     'category': 'Tools',
-    'price': 20.00,
+    'price': 15.00,
     'currency': 'USD',
     "application": True,
     'depends': ['base', 'base_setup', 'web', 'web_editor'],
