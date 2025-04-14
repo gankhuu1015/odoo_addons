@@ -2,12 +2,13 @@ odoo.define("aspl_web_tinymce_editor.wysiwyg", function (require) {
     "use strict";
   
     var Wysiwyg = require("web_editor.wysiwyg");
-    const TinyMceWysiwyg = Wysiwyg.extend({
+    const TinyMceWysiwyg= Wysiwyg.extend({
         /**
          * @override
          */
         init: function(parent, options) {
             this._super.apply(this, arguments);
+            // Ensure default options are set
             this.options = options || {};
             this.options.sanitize_tags = this.options.sanitize_tags || true;
         },
@@ -25,6 +26,8 @@ odoo.define("aspl_web_tinymce_editor.wysiwyg", function (require) {
                 console.error("Editor initialization failed:", error);
             }
         },
+  
+        // ... rest of your methods remain the same ...
     });
   
     return TinyMceWysiwyg;
