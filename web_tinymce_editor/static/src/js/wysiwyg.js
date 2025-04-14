@@ -1,4 +1,4 @@
-odoo.define("aspl_web_tinymce_editor.wysiwyg", function (require) {
+odoo.define("web_tinymce_editor.wysiwyg", function (require) {
     "use strict";
   
     var Wysiwyg = require("web_editor.wysiwyg");

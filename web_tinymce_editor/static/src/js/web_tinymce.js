@@ -171,7 +171,7 @@ export class TinyInit extends HtmlField {
   }
 
   async _getWysiwygClass() {
-    return getWysiwygClass({ moduleName: "aspl_web_tinymce_editor.wysiwyg" });
+    return getWysiwygClass({ moduleName: "web_tinymce_editor.wysiwyg" });
   }
 
   // Blur event handler for WYSIWYG editor
