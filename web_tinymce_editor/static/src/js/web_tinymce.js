@@ -121,14 +121,15 @@ export class TinyInit extends HtmlField {
     async initializeTinyMCE() {
         await loadBundle({
             jsLibs: [
-                '/aspl_web_tinymce_editor/static/lib/tinymce/tinymce.min.js'
+                '/web_tinymce_editor/static/lib/tinymce/tinymce.min.js'
             ],
         });
 
         if (typeof tinymce !== 'undefined') {
                 tinymce.init({
                     selector: ".o_field_tiny_init",
-                    height: 300,
+                    height: 400,
+                    license_key: 'gpl',
                     plugins:
                     "anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount", // TinyMCE plugins
                     toolbar:
