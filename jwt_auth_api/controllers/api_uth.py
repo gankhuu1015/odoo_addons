@@ -1,7 +1,7 @@
 from odoo import http
 from odoo.http import request
 from ..setup.jwt_token import JwtToken
-from odoo.addons.api_auth_jwt.common import valid_response, invalid_response
+from odoo.addons.jwt_auth_api.common import valid_response, invalid_response
 import logging
 _logger = logging.getLogger(__name__)
 import ast

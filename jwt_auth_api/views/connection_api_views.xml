@@ -53,7 +53,7 @@
               name="Rest API"
               sequence="10"
               groups="base.group_erp_manager"
-              web_icon="api_auth_jwt,static/description/icon.png"/>
+              web_icon="jwt_auth_api,static/description/icon.png"/>
     <menuitem id="rest_api_details_root"
               name="Rest API"
               parent="rest_api_root"
