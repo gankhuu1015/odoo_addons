@@ -198,7 +198,7 @@ Response:
         <li><code>model</code> (required): Odoo model technical name (example: <code>res.partner</code>)</li>
         <li><code>id</code> (optional): record ID to fetch a single resource</li>
         <li><code>fields</code> (required): JSON list of fields to return (example: <code>["name","email"]</code>)</li>
-        <li><code>domain</code> (optional): Odoo domain in string format (example: <code>[["is_company","=",true]]</code>)</li>
+        <li><code>domain</code> (optional): Odoo domain in string format (example: <code>[["active","=",true]]</code>)</li>
         <li><code>expand</code> (optional): relation expansion map (example: <code>{"child_ids":["name"]}</code>)</li>
         <li><code>offset</code> (optional): page number (default: 1)</li>
         <li><code>limit</code> (optional): page size (default: 20)</li>
@@ -206,14 +206,17 @@ Response:
 
       <pre style="background:#f7f7f7;padding:12px;border-radius:8px;overflow:auto;margin:0;">
 Example (GET list):
-/api/send_request?model=res.partner&fields=["name","email"]&domain=[["is_company","=",true]]&offset=1&limit=20
+/api/send_request?model=res.partner&fields=["name","email"]&domain=[["active","=",true]]&offset=1&limit=20
 
 Example (GET by id):
 /api/send_request?model=res.partner&id=10&fields=["name","email"]
 
 Example (GET with expand):
-/api/send_request?model=res.partner&fields=["name"]&expand={"child_ids":["name","email"]}</pre>
-
+/api/send_request?model=res.partner&fields=["id","name", "company_id"]&expand={"bank_ids":["acc_number","email"]}</pre>
+      <div class="oe_centeralign oe_mt16">
+      <img src="postman_image.png" style="border-radius:16px;">
+    </div>
+    <hr/>
       <h4 class="oe_mt16">POST / PUT request (Body JSON)</h4>
       <p style="font-size: 15px; line-height: 1.7;">
         For create/update, send JSON body with:
