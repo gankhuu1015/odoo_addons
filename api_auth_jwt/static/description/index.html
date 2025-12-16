@@ -1,0 +1,279 @@
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+    <div class="oe_span12">
+      <h1 class="oe_slogan">Odoo JWT Authentication & API Controllers </h1></h1>
+      <h2 class="oe_slogan" style="font-weight:400;">
+        Secure REST API authentication with Access & Refresh Tokens
+      </h2>
+
+      <p class="oe_mt32" style="font-size:16px;line-height:1.7;">
+        This module provides a complete <b>JWT (JSON Web Token)</b> authentication
+        solution for Odoo REST APIs.
+        <br><br>
+        It supports secure login, access token refresh, refresh token rotation,
+        logout (token revoke), and a powerful generic CRUD API protected by JWT.
+      </p>
+
+      <div class="oe_centeralign oe_mt16">
+        <img src="icon.png" style="width:128px;height:128px;border-radius:16px;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+    <div class="oe_span12">
+      <h3>Key Features</h3>
+      <ul style="font-size:15px;line-height:1.8;">
+        <li>JWT-based authentication for Odoo APIs</li>
+        <li>Login using username & password</li>
+        <li>Access token refresh using refresh token</li>
+        <li>Refresh token rotation for enhanced security</li>
+        <li>Logout / revoke refresh token</li>
+        <li>Browser support with HttpOnly cookie</li>
+        <li>Generic CRUD API for any Odoo model</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- AUTH HEADER -->
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+    <div class="oe_span12">
+      <h3>Authentication Header</h3>
+      <p style="font-size:15px;">
+        All protected endpoints require the access token in the
+        <b>Authorization</b> header.
+      </p>
+
+      <pre style="background:#f7f7f7;padding:12px;border-radius:8px;">
+Headers:
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer &lt;ACCESS_TOKEN&gt;"
+}
+</pre>
+    </div>
+  </div>
+</section>
+
+<!-- LOGIN -->
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+    <div class="oe_span12">
+      <h3>1. Login (Password Authentication)</h3>
+      <p><code>POST /api/login</code> (auth: none)</p>
+
+      <pre style="background:#f7f7f7;padding:12px;border-radius:8px;">
+Request:
+{
+  "login": "admin",
+  "password": "admin"
+}
+
+Response (Browser):
+{
+  "token": "ACCESS_TOKEN",
+  "user_id": 2,
+  "refreshToken": "REFRESH_TOKEN",
+}
+
+Response (Mobile/App):
+{
+  "token": "ACCESS_TOKEN",
+  "refreshToken": "REFRESH_TOKEN",
+  "user_id": 2
+}
+</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ACCESS TOKEN -->
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+    <div class="oe_span12">
+      <h3>2. Refresh Access Token</h3>
+      <p><code>POST /api/update/access-token</code></p>
+
+      <pre style="background:#f7f7f7;padding:12px;border-radius:8px;">
+Request:
+{
+  "user_id": 2
+}
+
+Response:
+{
+  "access_token": "NEW_ACCESS_TOKEN"
+}
+</pre>
+    </div>
+  </div>
+</section>
+
+<!-- REFRESH TOKEN -->
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+    <div class="oe_span12">
+      <h3>3. Rotate Refresh Token</h3>
+      <p><code>POST /api/update/refresh-token</code> (auth: jwt)</p>
+
+      <pre style="background:#f7f7f7;padding:12px;border-radius:8px;">
+Response (Browser):
+{
+  "status": "done",
+  "refreshToken": 1
+}
+
+Response (Mobile/App):
+{
+  "status": "done",
+  "refreshToken": "NEW_REFRESH_TOKEN"
+}
+</pre>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOUT -->
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+    <div class="oe_span12">
+      <h3>4. Logout / Revoke Token</h3>
+      <p><code>POST /api/revoke/token</code> (auth: jwt)</p>
+
+      <pre style="background:#f7f7f7;padding:12px;border-radius:8px;">
+Response:
+{
+  "status": "success",
+  "logged_out": 1
+}
+</pre>
+    </div>
+  </div>
+</section>
+
+<!-- GENERIC CRUD -->
+  
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+    <div class="oe_span12">
+      <h3>Generic CRUD API (JWT Protected)</h3>
+      <p style="font-size: 15px; line-height: 1.7;">
+        This module includes a <b>generic API endpoint</b> that can read, create, update, and delete records
+        from any Odoo model, based on configuration rules (<code>connection.api</code>).
+        <br>
+        Access to this endpoint is protected by <b>JWT authentication</b>.
+      </p>
+      <div class="oe_centeralign oe_mt16">
+        <img src="main_screen.png" style="border-radius:16px;">
+      </div>
+      <h4>Endpoint</h4>
+      <p style="margin-top: 0;">
+        <code>/api/send_request</code> (auth: <b>jwt</b>) — supports <b>GET</b>, <b>POST</b>, <b>PUT</b>, <b>DELETE</b>
+      </p>
+
+      <h4>How it works (high-level)</h4>
+      <ol style="font-size: 15px; line-height: 1.8;">
+        <li><b>Model validation:</b> reads <code>?model=</code> and verifies the model exists in <code>ir.model</code>.</li>
+        <li><b>Permission by configuration:</b> checks <code>connection.api</code> settings for the model
+          (allowed methods: GET/POST/PUT/DELETE).</li>
+        <li><b>Execute operation:</b> performs search/read, create, write, or unlink with <code>sudo()</code>.</li>
+        <li><b>Flexible response:</b> supports field selection, domain filtering, pagination, and relation expansion.</li>
+      </ol>
+
+      <h4>Supported methods</h4>
+      <ul style="font-size: 15px; line-height: 1.8;">
+        <li><b>GET</b> — List records or fetch a single record by ID</li>
+        <li><b>POST</b> — Create a new record</li>
+        <li><b>PUT</b> — Update an existing record by ID</li>
+        <li><b>DELETE</b> — Delete a record by ID</li>
+      </ul>
+
+      <h4>GET request (Query Parameters)</h4>
+      <ul style="font-size: 15px; line-height: 1.8;">
+        <li><code>model</code> (required): Odoo model technical name (example: <code>res.partner</code>)</li>
+        <li><code>id</code> (optional): record ID to fetch a single resource</li>
+        <li><code>fields</code> (required): JSON list of fields to return (example: <code>["name","email"]</code>)</li>
+        <li><code>domain</code> (optional): Odoo domain in string format (example: <code>[["is_company","=",true]]</code>)</li>
+        <li><code>expand</code> (optional): relation expansion map (example: <code>{"child_ids":["name"]}</code>)</li>
+        <li><code>offset</code> (optional): page number (default: 1)</li>
+        <li><code>limit</code> (optional): page size (default: 20)</li>
+      </ul>
+
+      <pre style="background:#f7f7f7;padding:12px;border-radius:8px;overflow:auto;margin:0;">
+Example (GET list):
+/api/send_request?model=res.partner&fields=["name","email"]&domain=[["is_company","=",true]]&offset=1&limit=20
+
+Example (GET by id):
+/api/send_request?model=res.partner&id=10&fields=["name","email"]
+
+Example (GET with expand):
+/api/send_request?model=res.partner&fields=["name"]&expand={"child_ids":["name","email"]}</pre>
+
+      <h4 class="oe_mt16">POST / PUT request (Body JSON)</h4>
+      <p style="font-size: 15px; line-height: 1.7;">
+        For create/update, send JSON body with:
+        <code>values</code> (data to write),
+        optional <code>fields</code> (fields to return),
+        optional <code>expand</code> (relations to expand).
+      </p>
+
+      <pre style="background:#f7f7f7;padding:12px;border-radius:8px;overflow:auto;margin:0;">
+Example (POST create):
+POST /api/send_request?model=res.partner
+{
+  "values": {
+    "name": "Test Partner",
+    "email": "test@example.com"
+  },
+}
+
+Example (PUT update):
+PUT /api/send_request?model=res.partner&id=10
+{
+  "values": {
+    "email": "new@example.com"
+  },
+}</pre>
+
+      <h4 class="oe_mt16">DELETE request</h4>
+      <pre style="background:#f7f7f7;padding:12px;border-radius:8px;overflow:auto;margin:0;">
+DELETE /api/send_request?model=res.partner&id=10
+
+Response:
+{
+  "deleted_id": 10
+}</pre>
+
+      <h4 class="oe_mt16">Important Notes</h4>
+      <ul style="font-size: 15px; line-height: 1.8;">
+        <li><b>JWT required:</b> All calls to <code>/api/send_request</code> require a valid access token.</li>
+        <li><b>Per-model method control:</b> Allowed HTTP methods are controlled by <code>connection.api</code> settings.</li>
+        <li><b>Pagination:</b> uses <code>offset</code> (page) and <code>limit</code> (page size).</li>
+        <li><b>Expand:</b> can load related records (many2one/one2many/many2many) with selected fields.</li>
+        <li><b>Security consideration:</b> This endpoint uses <code>sudo()</code>. It is recommended to strictly control
+          which models and methods are enabled through configuration and access rules.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- SECURITY -->
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+    <div class="oe_span12">
+      <h3>Security Notes</h3>
+      <ul style="font-size:15px;line-height:1.8;">
+        <li>HTTPS is strongly recommended</li>
+        <li>Refresh token is stored as HttpOnly cookie for browsers</li>
+        <li>Refresh token rotation reduces token theft risk</li>
+        <li>Access token must be sent with Bearer prefix</li>
+      </ul>
+    </div>
+  </div>
+</section>
