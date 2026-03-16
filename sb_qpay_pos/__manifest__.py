@@ -21,5 +21,6 @@
     "installable": True,
     "application": False,
     "license": "LGPL-3",
-    'price': 50.00,
+    'currency': 'USD',
+    'price': 40.00,
 }
