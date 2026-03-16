@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="sb_qpay_pos.QPayPosPopup">
+        <Dialog title.translate="QPay Payment" footer="false" bodyClass="'w-100 d-flex flex-column align-items-center gap-2'">
+            <p class="mb-0">QR уншуулж төлбөр хийнэ.</p>
+            <img class="w-50" t-att-src="props.qrSrc" alt="QPay QR"/>
+            <div class="small text-muted">Amount: <t t-esc="props.formattedAmount"/></div>
+            <div class="d-flex gap-2 mt-1">
+                <button type="button" class="btn btn-primary" t-on-click="onClickCheck">Check</button>
+                <button type="button" class="btn btn-secondary" t-on-click="onClickClose">Close</button>
+            </div>
+        </Dialog>
+    </t>
+</templates>

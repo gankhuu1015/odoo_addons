@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pos_payment_method_view_form_inherit_sb_qpay_pos" model="ir.ui.view">
+        <field name="name">pos.payment.method.form.inherit.sb_qpay_pos</field>
+        <field name="model">pos.payment.method</field>
+        <field name="inherit_id" ref="point_of_sale.pos_payment_method_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='use_payment_terminal']" position="after">
+                <field name="qpay_url" invisible="use_payment_terminal != 'qpay'" required="use_payment_terminal == 'qpay'"/>
+                <field name="qpay_username" invisible="use_payment_terminal != 'qpay'" required="use_payment_terminal == 'qpay'"/>
+                <field name="qpay_pwd" password="True" invisible="use_payment_terminal != 'qpay'" required="use_payment_terminal == 'qpay'"/>
+                <field name="qpay_invoice_code" invisible="use_payment_terminal != 'qpay'" required="use_payment_terminal == 'qpay'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

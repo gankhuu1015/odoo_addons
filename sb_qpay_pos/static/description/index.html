@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QPay POS - Танилцуулга, Заавар</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --muted: #475569;
+      --brand: #0ea5e9;
+      --accent: #22c55e;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 16px 56px;
+    }
+    .hero {
+      background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .hero h1 {
+      margin: 0 0 6px 0;
+      font-size: 28px;
+      letter-spacing: 0.2px;
+    }
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+    .pill-outline {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      color: var(--ink);
+    }
+    .pill-community {
+      background: #dcfce7;
+      border: 1px solid #86efac;
+      color: #166534;
+    }
+    .pill-enterprise {
+      background: #fef9c3;
+      border: 1px solid #fde047;
+      color: #854d0e;
+    }
+    .pill-wrap {
+      display: inline-flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .right-label {
+      color: #0369a1;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 18px 16px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    }
+    h2 {
+      font-size: 18px;
+      margin: 0 0 10px 0;
+    }
+    h3 {
+      font-size: 16px;
+      margin: 16px 0 8px 0;
+    }
+    ul, ol {
+      margin: 0 0 0 18px;
+      padding: 0;
+    }
+    .muted { color: var(--muted); }
+    .step {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--brand);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      margin-right: 6px;
+    }
+    .note {
+      border-left: 4px solid var(--accent);
+      background: #f0fdf4;
+      padding: 10px 12px;
+      border-radius: 8px;
+      color: #14532d;
+      margin-top: 12px;
+    }
+    .footer {
+      margin-top: 22px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .kbd {
+      padding: 2px 6px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #f1f5f9;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="topbar">
+        <div class="pill-wrap">
+          <span class="pill pill-enterprise">Enterprise</span>
+          <span class="pill pill-community">Community</span>
+        </div>
+        <div class="right-label">Odoo POS • QPay</div>
+      </div>
+      <h1>QPay POS Integration</h1>
+      <p>POS дээр QPay төлбөрийн QR үүсгэж, төлбөрийг шууд баталгаажуулах модуль.</p>
+      <p class="muted" style="margin-top:6px;">Odoo Enterprise болон Community хувилбар дээр ажиллана.</p>
+    </section>
+    <section class="card" style="margin-top:16px;">
+      <h2>Зургийн жишээ</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>QPay тохиргоо</h3>
+          <img src="payment_method_qpay_config.png" alt="QPay payment method configuration" style="width:100%;border:1px solid var(--border);border-radius:10px;">
+        </div>
+        <div class="card">
+          <h3>POS дээрх QR төлбөр</h3>
+          <img src="pos_qpay_image.png" alt="POS QPay QR payment screen" style="width:100%;border:1px solid var(--border);border-radius:10px;">
+        </div>
+      </div>
+    </section>
+    <div class="grid">
+      <section class="card">
+        <h2>Үндсэн боломжууд</h2>
+        <ul>
+          <li>POS төлбөрийн дэлгэцээс QPay QR үүсгэнэ.</li>
+          <li>Төлбөр баталгаажихад POS захиалга автоматаар төлөгдсөн төлөвт орно.</li>
+          <li>Төлбөрийн дүн, баримтын дугаар, төлөвийн бүртгэл.</li>
+          <li>Татгалзсан/цуцлагдсан төлбөрт буцаах горим.</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Тохируулахад шаардлагатай</h2>
+        <ul>
+          <li>QPay мерчант эрх (Client ID, Secret, API Endpoint).</li>
+          <li>Odoo POS тохиргоонд “QPay” төлбөрийн арга нэмэх эрх.</li>
+          <li>Интернэт холболт (POS төхөөрөмж).</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Суулгалт</h2>
+        <ol>
+          <li>Модулийг суулгана.</li>
+          <li><span class="kbd">POS</span> → <span class="kbd">Configuration</span> → <span class="kbd">Payment Methods</span> хэсэгт шинэ төлбөрийн арга үүсгэнэ.</li>
+          <li>“QPay” төрлийг сонгоно.</li>
+          <li>QPay-ийн түлхүүрүүдээ оруулна.</li>
+          <li>POS тохиргоонд уг төлбөрийн аргыг идэвхжүүлнэ.</li>
+        </ol>
+      </section>
+    </div>
+
+    <section class="card" style="margin-top:16px;">
+      <h2>Ашиглах заавар</h2>
+      <ol>
+        <li><span class="step">1</span>POS-д захиалга үүсгэнэ.</li>
+        <li><span class="step">2</span>Төлбөр хийх үед “QPay” сонгоно.</li>
+        <li><span class="step">3</span>QR код үүснэ.</li>
+        <li><span class="step">4</span>Хэрэглэгч банкны апп-аар QR уншуулж төлнө.</li>
+        <li><span class="step">5</span>Төлбөр баталгаажмагц захиалга “Paid” болно.</li>
+      </ol>
+      <div class="note">Зөвлөмж: Төлбөр амжилттай болсны дараа POS автоматаар баримт хэвлэнэ (POS тохиргооноос хамаарна).</div>
+    </section>
+
+  </div>
+</body>
+</html>
